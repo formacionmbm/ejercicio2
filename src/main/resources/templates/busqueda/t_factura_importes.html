@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet"th:href="@{/css/styles.css}">
     <title th:text="#{title.busqueda.facturas}">Buscador de facturas</title>
 
 </head>
 <body>
 <div>
-    <a th:href="@{'/'}">Volver</a>
+    <a th:href="@{/}">Volver</a>
 </div>
 
 <div>
@@ -16,16 +16,18 @@
 </div>
 
 <div>
-    <form name="f_buscador_importes" method="post" action="/b/f/i" >
+    <form name="f_buscador_importes" method="post" th:action="@{/b/f/i}" >
+
         <label for="importeMinimo" th:text="#{label.importe.minimo}">Nombre</label>
-        <input type="text" id="importeMinimo" name="importeMinimo">
+        <input type="number" id="importeMinimo" name="importeMinimo">
+
         <label for="importeMaximo" th:text="#{label.importe.maximo}">Apellidos</label>
-        <input type="text" id="importeMaximo" name="importeMaximo"><br>
-        <button th:text="#{form.button.go}">Enviar</button>
+        <input type="number" id="importeMaximo" name="importeMaximo"><br>
+        <button type="submit" th:text="#{form.button.go}">Enviar</button>
     </form>
 </div>
 
-<div >
+<div th:if="${list}">
     <table id="data">
         <thead>
         <tr>
@@ -34,7 +36,7 @@
             <th th:text="#{label.tipo}">Tipo</th>
         </tr>
         </thead>
-        <tbody th:if="${list}">
+        <tbody>
         <tr th:each="factura : ${list}">
             <td th:text="${factura.codigo}">Codigo</td>
             <td th:text="${factura.importe}">Importe</td>
@@ -44,7 +46,7 @@
     </table>
 </div>
 <div th:if="${error}" class="error">
-    <p class="error" th:text="#{${error}}">Mensaje de error</p>
+    <p class="error" th:text="${error}">Mensaje de error</p>
 </div>
 
 </body>

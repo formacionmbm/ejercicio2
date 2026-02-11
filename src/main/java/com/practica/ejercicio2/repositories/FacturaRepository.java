@@ -3,16 +3,18 @@ package com.practica.ejercicio2.repositories;
 import com.practica.ejercicio2.entities.Factura;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface FacturaRepository extends JpaRepository<Factura,Long> {
 
-    Optional<Factura> findByCodigo(Long codigo);
+    Optional<Factura> findByCodigo(String codigo);
 
-    @Query("SELECT * FROM FACTURAS f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo")
-    Factura findByEntreImportes(float importeMinimo, float importeMaximo);
-
+    @Query("SELECT f FROM Factura f WHERE f.importe BETWEEN :min AND :max")
+    List<Factura> findByEntreImportes(@Param("min") float min, @Param("max") float max);
 
 }

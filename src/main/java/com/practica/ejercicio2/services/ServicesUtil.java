@@ -1,5 +1,8 @@
 package com.practica.ejercicio2.services;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ServicesUtil {
 
     public static boolean validUsername(String username){

@@ -8,17 +8,17 @@
 </head>
 <body>
 <div>
-    <a th:href="@{'/'}">Volver</a>
+    <a th:href="@{/}">Volver</a>
 </div>
 <div>
     <h1 th:text="#{title.busqueda.facturas}">Buscador de facturas</h1>
 </div>
 
 <div>
-    <form name="f_buscador_codigo" action="/b/f">
+    <form name="f_buscador_codigo" th:action="@{/b/f}" method="get">
         <label for="code" th:text="#{label.codigo}">Codigo</label>
-        <input type="text" id="code" name="code">
-        <button th:text="#{form.button.go}">Enviar</button>
+        <input type="text" id="code" name="codigo">
+        <button type="submit" th:text="#{form.button.go}">Enviar</button>
     </form>
 </div>
 
@@ -41,22 +41,28 @@
     </table>
 </div>
 <div th:if="${error}" class="error">
-    <p class="error" th:text="#{${error}}">Mensaje de error</p>
+    <p class="error" th:text="${error}">Mensaje de error</p>
 </div>
 <div>
     <h1 th:text="#{title.busqueda.facturas.tipo}">Buscador de facturas por tipo</h1>
 </div>
 <div>
-    <form name="f_buscador_tipo" action="/b/f/t">
+    <form name="f_buscador_tipo" th:action="@{/b/f/t}" method="get">
          <select id="tipo" name="tipo">
             <option></option>
-            <option th:value="${tipo}" th:text="${tipo}"></option>
+
+             <option
+                     th:each="t : ${tipos}"
+                     th:value="${t}"
+                     th:text="${t}">
+
+             </option>
         </select>
-        <button th:text="#{form.button.go}">Enviar</button>
+        <button type="submit" th:text="#{form.button.go}">Enviar</button>
     </form>
 </div>
 
-<div th:if="${list}">
+<div th:if="${list != null and !list.isEmpty()}">
     <table id="data">
         <thead>
         <tr>

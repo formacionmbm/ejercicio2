@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface Busquedas {
     public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException;
+
+    Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException;
+
     List<Factura> busquedaFacturasPorTipo(TipoFactura tipo)throws ServiceException;
     List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException;
 

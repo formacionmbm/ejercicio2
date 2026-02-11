@@ -32,14 +32,13 @@ public class BusquedasFacturasController {
         log.debug("[codigo:{}]", codigo);
 
         model.addAttribute("tipos", TipoFactura.values());
-        if(codigo==null)
+        if(codigo==null || codigo.isEmpty()){
             return "/busqueda/t_factura";
-
+        }
 
         Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
-
-        log.debug("[Factura:{}", factura);
         model.addAttribute("factura", factura);
+        log.debug("[Factura:{}", factura);
 
         return "/busqueda/t_factura";
     }
@@ -48,26 +47,30 @@ public class BusquedasFacturasController {
     public String busquedaPorTipo(TipoFactura tipo, Model model) throws ServiceException {
         log.info("[busquedaPorTipo]");
         log.debug("[tipo:{}]", tipo);
-
+        model.addAttribute("tipos", TipoFactura.values());
         List<Factura> list=servicio.busquedaFacturasPorTipo(tipo);
 
-        log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
+        log.debug("[Facturas List:{}", list);
 
         return "/busqueda/t_factura";
     }
 
-
-
-
+    @GetMapping("/i")
+    public String busquedaPorImportesGet() {
+        log.info("[busquedaPorImportes - GET]");
+        return "/busqueda/t_factura_importes";
+    }
     @PostMapping("/i")
     public String busquedaPorImportes( ImportesDTO importes, Model model) throws ServiceException{
         log.info("[busquedaPorImportes -POST]");
         log.debug("[importes:{}]",importes);
 
-        List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
+        List<Factura> listado = servicio.busquedaFacturasPorImportes(
+                importes.getImporteMinimo(),
+                importes.getImporteMaximo());
         log.debug("[Facturas List:{}", listado);
-        model.addAttribute("listado", listado);
+        model.addAttribute("list", listado);
         return "/busqueda/t_factura_importes";
     }
 
