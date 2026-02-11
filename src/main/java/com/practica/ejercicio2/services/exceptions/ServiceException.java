@@ -7,11 +7,11 @@ public class ServiceException extends AppException {
 
 
     public ServiceException() {
-        super(CodeError.SERVICE);
+        super(CodeError.SERVICE.getMessage(),CodeError.SERVICE.getCode());
     }
 
     public ServiceException(String message) {
-        super(message);
+        super(message,CodeError.SERVICE.getCode());
     }
 
 
