@@ -62,7 +62,18 @@ public class ServicioBusquedas implements Busquedas {
 
     @Override
     public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
-        return List.of();
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importeMinimo:{},importeMaximo:{}]", importeMinimo,importeMaximo);
+        try {
+            if(importeMinimo<0 || importeMaximo<0)
+                return List.of();
+
+            return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
+
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
     }
 
 
