@@ -6,6 +6,7 @@ import com.practica.ejercicio2.entities.Factura;
 import com.practica.ejercicio2.services.exceptions.ServiceException;
 import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,14 +19,14 @@ import java.util.List;
 @RequestMapping("/api")
 public class BusquedasFacturasRestController {
 
-
+    @Autowired
     Busquedas servicio;
 
     public void BusquedasFacturasController(Busquedas servicio) {
         this.servicio = servicio;
     }
 
-    @GetMapping("/b/f/{importeMinimo}")
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
     public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
         log.info("[findByImportes]");
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
