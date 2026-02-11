@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface FacturaRepository extends JpaRepository<Factura,Long> {
 
     Optional<Factura> findByCodigo(String codigo);
-    @Query(value="SELECT f FROM FACTURA f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo", nativeQuery=true)
+    @Query(value="SELECT f FROM Factura f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo")
     List<Factura> findByEntreImportes(float importeMinimo, float importeMaximo);
 
 

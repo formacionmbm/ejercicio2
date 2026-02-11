@@ -34,8 +34,8 @@
             <th th:text="#{label.tipo}">Tipo</th>
         </tr>
         </thead>
-        <tbody th:if="${listado}">
-        <tr th:each="factura : ${listado}">
+        <tbody th:if="${list}">
+        <tr th:each="factura : ${list}">
             <td th:text="${factura.codigo}">Codigo</td>
             <td th:text="${factura.importe}">Importe</td>
             <td th:text="${factura.tipo}">Tipo</td>
