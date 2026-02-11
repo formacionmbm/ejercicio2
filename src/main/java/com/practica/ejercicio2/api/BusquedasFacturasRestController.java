@@ -22,8 +22,9 @@ public class BusquedasFacturasRestController {
     @Autowired
     Busquedas servicio;
 
-    @GetMapping("/b/f/{importeMinimo}")
-    public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
+    public List<Factura> findByImportes(@PathVariable float importeMinimo,
+                                        @PathVariable float importeMaximo) throws ServiceException {
         log.info("[findByImportes]");
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
 
@@ -44,7 +45,7 @@ public class BusquedasFacturasRestController {
     }
 
     @GetMapping("/b/t/{tipo}")
-    public List<Factura> findByTipo() throws ServiceException{
+    public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
 

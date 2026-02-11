@@ -8,36 +8,35 @@ import com.practica.ejercicio2.services.exceptions.FacturaNotFoundException;
 import com.practica.ejercicio2.services.exceptions.ServiceException;
 import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 @Slf4j
 public class ServicioBusquedas implements Busquedas {
 
+
+    @Autowired
     FacturaRepository repositorio;
 
 
 
-
-
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
-        try {
 
-            return repositorio.findByCodigo(codigo)
-                    .orElseThrow(FacturaNotFoundException::new);
+        // Buscar factura
+        Factura factura = repositorio.findAll().stream()
+                .filter(f -> f.getCodigo().equals(codigo))
+                .findFirst()
+                .orElseThrow(FacturaNotFoundException::new);
 
-        } catch (ServiceException se) {
-            log.error("Bussiness Error", se);
-            throw se;
-        } catch (Exception e) {
-            log.error("General Error", e);
-            throw new ServiceException();
-        }
+        log.debug("[Factura:{}]", factura);
+        return factura;
     }
 
     @Override
@@ -55,6 +54,21 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws FacturaNotFoundException {
+        // Validación de importes inválidos
+        if (importeMinimo > importeMaximo) {
+            throw new FacturaNotFoundException();
+        }
+
+        List<Factura> facturas = repositorio.findByImporteBetween(importeMinimo, importeMaximo);
+
+        if (facturas.isEmpty()) {
+            throw new FacturaNotFoundException();
+        }
+
+        return facturas;
+    }
 
 
 

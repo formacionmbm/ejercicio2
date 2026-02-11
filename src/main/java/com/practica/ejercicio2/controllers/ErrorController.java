@@ -15,6 +15,6 @@ public class ErrorController {
     public String irError(Model model){
         log.info("[irError]");
 
-        return "/error/t_error.html";
+        return "/error/t_error";
     }
 }

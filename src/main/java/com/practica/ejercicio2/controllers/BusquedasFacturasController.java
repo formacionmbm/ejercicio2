@@ -42,7 +42,15 @@ public class BusquedasFacturasController {
         model.addAttribute("factura", factura);
 
         return "/busqueda/t_factura";
+
     }
+    @GetMapping("/i")
+    public String busquedaPorImportesForm(Model model) {
+        log.info("[busquedaPorImportes -GET]");
+        model.addAttribute("importes", new ImportesDTO()); // objeto vacío para el formulario
+        return "/busqueda/t_factura_importes";
+    }
+
 
     @GetMapping("/t")
     public String busquedaPorTipo(TipoFactura tipo, Model model) throws ServiceException {
@@ -53,6 +61,7 @@ public class BusquedasFacturasController {
 
         log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
+        model.addAttribute("tipos", TipoFactura.values());
 
         return "/busqueda/t_factura";
     }
@@ -67,7 +76,8 @@ public class BusquedasFacturasController {
 
         List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
         log.debug("[Facturas List:{}", listado);
-        model.addAttribute("listado", listado);
+        model.addAttribute("list", listado);
+        model.addAttribute("tipos", TipoFactura.values());
         return "/busqueda/t_factura_importes";
     }
 
