@@ -12,18 +12,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 @Slf4j
 public class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
 
-
+    public ServicioBusquedas(FacturaRepository repositorio){
+        this.repositorio = repositorio;
+    }
 
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -51,6 +53,23 @@ public class ServicioBusquedas implements Busquedas {
 
         } catch (Exception e) {
             log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
+
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[min:{}, max:{}]", importeMinimo, importeMaximo);
+
+        try {
+            if (importeMinimo < 0 || importeMaximo < 0 || importeMinimo > importeMaximo) {
+                return List.of();
+            }
+            return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
+
+        } catch (Exception e) {
+            log.error("Fallo catastrofico", e);
             throw new ServiceException();
         }
     }
