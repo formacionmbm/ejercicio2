@@ -32,8 +32,10 @@ public class BusquedasFacturasController {
         log.debug("[codigo:{}]", codigo);
 
         model.addAttribute("tipos", TipoFactura.values());
+        model.addAttribute("importesDTO", new ImportesDTO());
         if(codigo==null)
             return "/busqueda/t_factura";
+
 
 
         Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
@@ -48,6 +50,9 @@ public class BusquedasFacturasController {
     public String busquedaPorTipo(TipoFactura tipo, Model model) throws ServiceException {
         log.info("[busquedaPorTipo]");
         log.debug("[tipo:{}]", tipo);
+
+        model.addAttribute("tipos", TipoFactura.values());
+        model.addAttribute("importesDTO", new ImportesDTO());
 
         List<Factura> list=servicio.busquedaFacturasPorTipo(tipo);
 

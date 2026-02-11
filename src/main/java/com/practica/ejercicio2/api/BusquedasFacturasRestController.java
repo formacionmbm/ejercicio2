@@ -20,11 +20,12 @@ import java.util.List;
 public class BusquedasFacturasRestController {
 
     @Autowired
-    Busquedas servicio;
+    private Busquedas servicio;
 
-    @GetMapping("/b/f/{importeMinimo}")
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
     public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
         log.info("[findByImportes]");
+        log.debug("[min:{}, max:{}]", importeMinimo, importeMaximo);
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
 
         log.debug("[Facturas:{}",facturas);
@@ -44,12 +45,12 @@ public class BusquedasFacturasRestController {
     }
 
     @GetMapping("/b/t/{tipo}")
-    public List<Factura> findByTipo() throws ServiceException{
+    public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
 
         List<Factura> facturas = servicio.busquedaFacturasPorTipo(tipo);
-        log.debug("[Facturas:{}",facturas);
+        log.debug("[Facturas]:{}",facturas);
 
         return facturas;
     }

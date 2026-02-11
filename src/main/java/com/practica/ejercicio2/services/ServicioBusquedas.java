@@ -10,30 +10,34 @@ import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 @Slf4j
 public class ServicioBusquedas implements Busquedas {
 
-    FacturaRepository repositorio;
+    private final FacturaRepository repositorio;
 
-
+    public ServicioBusquedas(FacturaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
 
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
 
             return repositorio.findByCodigo(codigo)
                     .orElseThrow(FacturaNotFoundException::new);
-
-        } catch (ServiceException se) {
-            log.error("Bussiness Error", se);
-            throw se;
+        } catch (FacturaNotFoundException e) {
+            throw e;
+        //} catch (ServiceException se) {
+        //    log.error("Bussiness Error", se);
+        //    throw se;
         } catch (Exception e) {
             log.error("General Error", e);
             throw new ServiceException();
@@ -47,8 +51,25 @@ public class ServicioBusquedas implements Busquedas {
         try {
             List<Factura> facturas = repositorio.findAll();
 
-            return facturas.stream().filter(f -> f.getTipo()==tipo).toList();
+            return facturas.stream()
+                    .filter(f -> f.getTipo()==tipo)
+                    .toList();
 
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
+
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[min:{}, max:{}]", importeMinimo, importeMaximo);
+        try {
+            //if (importeMinimo < 0 || importeMaximo < 0) {
+            //    return new ArrayList<>();
+            //}
+            return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
         } catch (Exception e) {
             log.error("General Error", e);
             throw new ServiceException();
