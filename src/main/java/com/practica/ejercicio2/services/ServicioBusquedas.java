@@ -19,8 +19,12 @@ import java.util.List;
 public class ServicioBusquedas implements Busquedas {
 
 
-    @Autowired
+
     FacturaRepository repositorio;
+
+    public ServicioBusquedas(FacturaRepository repositorio){
+        this.repositorio=repositorio;
+    }
 
 
 
@@ -28,15 +32,20 @@ public class ServicioBusquedas implements Busquedas {
     public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
-
+        try {
         // Buscar factura
-        Factura factura = repositorio.findAll().stream()
-                .filter(f -> f.getCodigo().equals(codigo))
-                .findFirst()
+        Factura factura = repositorio.findByCodigo(codigo)
                 .orElseThrow(FacturaNotFoundException::new);
 
         log.debug("[Factura:{}]", factura);
         return factura;
+        } catch (ServiceException se) {
+            log.error("Bussiness Error", se);
+            throw se;
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
     }
 
     @Override
@@ -55,21 +64,21 @@ public class ServicioBusquedas implements Busquedas {
     }
 
     @Override
-    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws FacturaNotFoundException {
-        // Validación de importes inválidos
-        if (importeMinimo > importeMaximo) {
-            throw new FacturaNotFoundException();
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importeMinimo:{}]", importeMinimo);
+        log.debug("[importeMaximo:{}]", importeMaximo);
+
+
+        try{
+            if(importeMinimo<0 || importeMaximo<0)
+                return List.of();
+
+            return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
+
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
         }
-
-        List<Factura> facturas = repositorio.findByImporteBetween(importeMinimo, importeMaximo);
-
-        if (facturas.isEmpty()) {
-            throw new FacturaNotFoundException();
-        }
-
-        return facturas;
     }
-
-
-
 }
