@@ -54,6 +54,7 @@ public class BusquedasFacturasController {
         log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
 
+
         return "/busqueda/t_factura";
     }
 
@@ -67,7 +68,7 @@ public class BusquedasFacturasController {
 
         List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
         log.debug("[Facturas List:{}", listado);
-        model.addAttribute("listado", listado);
+        model.addAttribute("list", listado);
         return "/busqueda/t_factura_importes";
     }
 
