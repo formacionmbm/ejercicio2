@@ -12,26 +12,27 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 @Slf4j
+
 public class ServicioBusquedas implements Busquedas {
 
-    FacturaRepository repositorio;
+    private final FacturaRepository repositorio;
 
-
-
+    public ServicioBusquedas(FacturaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
-
             return repositorio.findByCodigo(codigo)
                     .orElseThrow(FacturaNotFoundException::new);
 
-        } catch (ServiceException se) {
+        } catch (ServiceException se) { //(FacturaNotFoundException e)
             log.error("Bussiness Error", se);
             throw se;
         } catch (Exception e) {
@@ -51,11 +52,14 @@ public class ServicioBusquedas implements Busquedas {
 
         } catch (Exception e) {
             log.error("General Error", e);
-            throw new ServiceException();
+            throw new ServiceException("Error con la factura", e);
         }
     }
 
-
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        return List.of();
+    }
 
 
 }

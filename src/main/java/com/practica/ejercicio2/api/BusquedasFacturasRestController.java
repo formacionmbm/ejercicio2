@@ -17,40 +17,43 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api")
+
 public class BusquedasFacturasRestController {
 
     @Autowired
-    Busquedas servicio;
+    private final Busquedas servicio;
 
-    @GetMapping("/b/f/{importeMinimo}")
+    public BusquedasFacturasRestController(Busquedas servicio) {
+        this.servicio = servicio; //inyección por constructor
+    }
+
+    @GetMapping("/b/importes/{Min}/{Max}")
     public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
-        log.info("[findByImportes]");
+
+        log.info("[findByImportes] min:{}, max:{}");
+
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
-
         log.debug("[Facturas:{}",facturas);
-
         return facturas;
     }
 
-    @GetMapping("/b/f/{code}")
+    @GetMapping("/b/f/c/{code}")
     public Factura findByCodigo(@PathVariable(name="code") String codigo) throws ServiceException{
-        log.info("[findByCodigo]");
-        log.debug("[codigo:{}]",codigo);
+        log.info("[findByCodigo] codigo: {}");
+        //log.debug("[codigo:{}]",codigo);
 
         Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
         log.debug("[Factura:{}",factura);
-
         return factura;
     }
 
     @GetMapping("/b/t/{tipo}")
-    public List<Factura> findByTipo() throws ServiceException{
+    public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
 
         List<Factura> facturas = servicio.busquedaFacturasPorTipo(tipo);
         log.debug("[Facturas:{}",facturas);
-
         return facturas;
     }
 }

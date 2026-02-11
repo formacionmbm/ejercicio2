@@ -7,7 +7,11 @@ public class ServiceException extends AppException {
     public ServiceException(){
         super("General Error Service Layer");
     }
-    public ServiceException(String mensagge){
-        super(mensagge);
+    public ServiceException(String message){
+        super(message);
     }
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

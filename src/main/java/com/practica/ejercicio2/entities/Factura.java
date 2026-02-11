@@ -21,4 +21,5 @@ public class Factura {
     private float importe;
     @Enumerated(EnumType.STRING)
     private TipoFactura tipo;
+
 }
