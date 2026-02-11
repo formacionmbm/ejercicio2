@@ -10,20 +10,23 @@ import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 @Slf4j
 public class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
 
-
+    public ServicioBusquedas(FacturaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -55,7 +58,25 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importeMinimo:{}, importeMaximo:{}]", importeMinimo, importeMaximo);
 
+        try {
+
+            if (importeMinimo < 0 || importeMaximo < 0) {
+                return new ArrayList<>();
+            }
+
+            List<Factura> facturas = repositorio.findByEntreImportes(importeMinimo, importeMaximo);
+            return facturas;
+
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
 
 
 }

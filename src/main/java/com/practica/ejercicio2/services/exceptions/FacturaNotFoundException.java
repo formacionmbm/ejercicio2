@@ -4,4 +4,7 @@ public class FacturaNotFoundException extends ServiceException{
     public FacturaNotFoundException() {
         super("Factura no encontrada");
     }
+    public FacturaNotFoundException(String mensaje) {
+        super(mensaje);
+    }
 }
