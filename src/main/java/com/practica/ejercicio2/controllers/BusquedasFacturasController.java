@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -27,25 +28,28 @@ public class BusquedasFacturasController {
     Busquedas servicio;
 
     @GetMapping
-    public String busquedaPorCodigo(String codigo, Model model) throws ServiceException {
+    public String busquedaPorCodigo(@RequestParam(required = false) String codigo, Model model) throws ServiceException {
         log.info("[busquedaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
 
         model.addAttribute("tipos", TipoFactura.values());
-        if(codigo==null)
+        if(codigo==null || codigo.isEmpty()){
             return "/busqueda/t_factura";
-
-
-        Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
-
-        log.debug("[Factura:{}", factura);
-        model.addAttribute("factura", factura);
-
+        }
+        try{
+            Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
+            log.debug("{[Factura:{}], factura}");
+            model.addAttribute("factura", factura);
+        } catch (ServiceException e){
+            model.addAttribute("error", e.getMessage());
+        }
         return "/busqueda/t_factura";
+
     }
 
+
     @GetMapping("/t")
-    public String busquedaPorTipo(TipoFactura tipo, Model model) throws ServiceException {
+    public String busquedaPorTipo(@RequestParam() TipoFactura tipo, Model model) throws ServiceException {
         log.info("[busquedaPorTipo]");
         log.debug("[tipo:{}]", tipo);
 

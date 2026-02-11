@@ -19,6 +19,7 @@ public class Factura {
     private String codigo;
     private String concepto;
     private float importe;
+
     @Enumerated(EnumType.STRING)
     private TipoFactura tipo;
 }
