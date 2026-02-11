@@ -10,20 +10,24 @@ import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Slf4j
+@Service
 public class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
-
-
-
+    public ServicioBusquedas(FacturaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -40,6 +44,8 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
+
+
     @Override
     public List<Factura> busquedaFacturasPorTipo(TipoFactura tipo)throws ServiceException {
         log.info("[busquedaFacturaPorTipo]");
@@ -55,7 +61,27 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
 
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importe minimo:{}]", importeMinimo);
+        log.debug("[importe maximo:{}]", importeMaximo);
+        try {
 
+            //if(ServicesUtil.validImporteNoNegativo(importeMinimo) || ServicesUtil.validImporteNoNegativo(importeMaximo))
+            //    return new ArrayList<Factura>();
+
+            //return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
+
+            return (ServicesUtil.validImporteNoNegativo(importeMinimo) && ServicesUtil.validImporteNoNegativo(importeMaximo))
+                    ? repositorio.findByEntreImportes(importeMinimo, importeMaximo)
+                    : new ArrayList<>();
+
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
 
 }

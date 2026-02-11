@@ -58,7 +58,12 @@ public class BusquedasFacturasController {
     }
 
 
+    @GetMapping("/i")
+    public String mostrarBusquedaPorImportes( Model model) throws ServiceException{
+        log.info("[busquedaPorImportes -GET]");
 
+        return "/busqueda/t_factura_importes";
+    }
 
     @PostMapping("/i")
     public String busquedaPorImportes( ImportesDTO importes, Model model) throws ServiceException{

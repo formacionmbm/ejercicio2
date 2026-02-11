@@ -7,4 +7,14 @@ public class ServicesUtil {
         if(username.trim().isEmpty()) return false;
         return true;
     }
+
+    public static boolean validImporteNoNegativo(float importe){
+        if(importe < 0) return false;
+        return true;
+    }
+
+    public static boolean validImporteNoNulo(Float importe){
+        if(importe == null) return false;
+        return true;
+    }
 }
