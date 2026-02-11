@@ -22,12 +22,12 @@ public class BusquedasFacturasRestController {
     @Autowired
     Busquedas servicio;
 
-    @GetMapping("/b/f/{importeMinimo}")
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
     public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
         log.info("[findByImportes]");
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
 
-        log.debug("[Facturas:{}",facturas);
+        log.debug("[Facturas:{}]",facturas);
 
         return facturas;
     }
@@ -38,18 +38,18 @@ public class BusquedasFacturasRestController {
         log.debug("[codigo:{}]",codigo);
 
         Factura factura = servicio.busquedaFacturaPorCodigo(codigo);
-        log.debug("[Factura:{}",factura);
+        log.debug("[Factura:{}]",factura);
 
         return factura;
     }
 
     @GetMapping("/b/t/{tipo}")
-    public List<Factura> findByTipo() throws ServiceException{
+    public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
 
         List<Factura> facturas = servicio.busquedaFacturasPorTipo(tipo);
-        log.debug("[Facturas:{}",facturas);
+        log.debug("[Facturas:{}]",facturas);
 
         return facturas;
     }
