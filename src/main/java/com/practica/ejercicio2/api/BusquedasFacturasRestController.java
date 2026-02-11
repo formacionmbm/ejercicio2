@@ -29,7 +29,7 @@ public class BusquedasFacturasRestController {
         return facturas;
     }
 
-    @GetMapping("/b/f/{code}")
+    @GetMapping("/b/f/**")
     public Factura findByCodigo(@PathVariable(name="code") String codigo) throws ServiceException{
         log.info("[findByCodigo]");
         log.debug("[codigo:{}]",codigo);
