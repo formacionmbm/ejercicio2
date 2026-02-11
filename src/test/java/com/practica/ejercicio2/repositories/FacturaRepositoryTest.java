@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ class FacturaRepositoryTest {
         facturaRepository.save(factura);
 
         // when
+        //Optional<Factura> resultado = facturaRepository.findByCodigo("FAC-001");
         Optional<Factura> resultado = facturaRepository.findByCodigo("FAC-001");
 
         // then
@@ -43,6 +45,7 @@ class FacturaRepositoryTest {
     void findByCodigo_ko() {
         log.info("[findByCodigo_ko]");
         // when
+        //Optional<Factura> resultado = facturaRepository.findByCodigo("NO-EXISTE");
         Optional<Factura> resultado = facturaRepository.findByCodigo("NO-EXISTE");
 
         // then

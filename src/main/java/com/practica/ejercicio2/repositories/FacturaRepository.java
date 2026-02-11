@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface FacturaRepository extends JpaRepository<Factura,Long> {
 
-    Optional<Factura> findByCodigo(Long codigo);
+    Optional<Factura> findByCodigo(String codigo);
 
-    @Query("SELECT * FROM FACTURAS f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo")
-    Factura findByEntreImportes(float importeMinimo, float importeMaximo);
+    @Query("SELECT f FROM Factura f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo")
+    List<Factura> findByEntreImportes(float importeMinimo, float importeMaximo);
 
 
 }

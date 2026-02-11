@@ -7,10 +7,7 @@ import com.practica.ejercicio2.services.exceptions.ServiceException;
 import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +19,8 @@ public class BusquedasFacturasRestController {
     @Autowired
     Busquedas servicio;
 
-    @GetMapping("/b/f/{importeMinimo}")
-    public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
+    public List<Factura> findByImportes(@PathVariable  float importeMinimo, @PathVariable  float importeMaximo) throws ServiceException {
         log.info("[findByImportes]");
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
 
@@ -44,7 +41,7 @@ public class BusquedasFacturasRestController {
     }
 
     @GetMapping("/b/t/{tipo}")
-    public List<Factura> findByTipo() throws ServiceException{
+    public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
 

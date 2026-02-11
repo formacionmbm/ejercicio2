@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Slf4j
-public class ServicioBusquedas implements Busquedas {
+public abstract class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
@@ -22,7 +22,7 @@ public class ServicioBusquedas implements Busquedas {
 
 
 
-    @Override
+    /*@Override
     public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
@@ -38,7 +38,7 @@ public class ServicioBusquedas implements Busquedas {
             log.error("General Error", e);
             throw new ServiceException();
         }
-    }
+    }*/
 
     @Override
     public List<Factura> busquedaFacturasPorTipo(TipoFactura tipo)throws ServiceException {
