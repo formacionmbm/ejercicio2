@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title th:text="#{title.busqueda.facturas}">Buscador de facturas</title>
+
+</head>
+<body>
+<div>
+    <a th:href="@{'/'}">Volver</a>
+</div>
+
+<div>
+    <h1 th:text="#{title.busqueda.facturas.importes}">Buscador de facturas por importes</h1>
+</div>
+
+<div>
+    <form name="f_buscador_importes" method="post" action="/b/f/i" >
+        <label for="importeMinimo" th:text="#{label.importe.minimo}">Nombre</label>
+        <input type="text" id="importeMinimo" name="importeMinimo">
+        <label for="importeMaximo" th:text="#{label.importe.maximo}">Apellidos</label>
+        <input type="text" id="importeMaximo" name="importeMaximo"><br>
+        <button th:text="#{form.button.go}">Enviar</button>
+    </form>
+</div>
+
+<div >
+    <table id="data">
+        <thead>
+        <tr>
+            <th th:text="#{label.codigo}">Codigo</th>
+            <th th:text="#{label.importe}">Importe</th>
+            <th th:text="#{label.tipo}">Tipo</th>
+        </tr>
+        </thead>
+        <tbody th:if="${list}">
+        <tr th:each="factura : ${list}">
+            <td th:text="${factura.codigo}">Codigo</td>
+            <td th:text="${factura.importe}">Importe</td>
+            <td th:text="${factura.tipo}">Tipo</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${error}" class="error">
+    <p class="error" th:text="#{${error}}">Mensaje de error</p>
+</div>
+
+</body>
+</html>
