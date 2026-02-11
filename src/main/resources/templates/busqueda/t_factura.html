@@ -16,8 +16,8 @@
 
 <div>
     <form name="f_buscador_codigo" action="/b/f">
-        <label for="code" th:text="#{label.codigo}">Codigo</label>
-        <input type="text" id="code" name="code">
+        <label for="codigo" th:text="#{label.codigo}">Codigo</label>
+        <input type="text" id="codigo" name="codigo">
         <button th:text="#{form.button.go}">Enviar</button>
     </form>
 </div>
@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody >
-        <tr>
+        <tr th:each="factura : ${factura}">
             <td th:text="${factura.codigo}">Codigo</td>
             <td th:text="${factura.importe}">Importe</td>
             <td th:text="${factura.tipo}">Tipo</td>
@@ -50,7 +50,7 @@
     <form name="f_buscador_tipo" action="/b/f/t">
          <select id="tipo" name="tipo">
             <option></option>
-            <option th:value="${tipo}" th:text="${tipo}"></option>
+            <option th:each="tipo:${tipos}" th:value="${tipo}" th:text="${tipo}"></option>
         </select>
         <button th:text="#{form.button.go}">Enviar</button>
     </form>
@@ -66,17 +66,17 @@
         </tr>
         </thead>
         <tbody >
-        <tr th:each="factura : ${list}">
-            <td th:text="${factura.codigo}">Codigo</td>
-            <td th:text="${factura.importe}">Importe</td>
-            <td th:text="${factura.tipo}">Tipo</td>
+        <tr th:each="l : ${list}">
+            <td th:text="${l.codigo}">Codigo</td>
+            <td th:text="${l.importe}">Importe</td>
+            <td th:text="${l.tipo}">Tipo</td>
         </tr>
         </tbody>
         <tbody th:if="${factura}">
-        <tr>
-            <td th:text="${factura.codigo}">Codigo</td>
-            <td th:text="${factura.importe}">Importe</td>
-            <td th:text="${factura.tipo}">Tipo</td>
+        <tr th:each="f : ${factura}">
+            <td th:text="${f.codigo}">Codigo</td>
+            <td th:text="${f.importe}">Importe</td>
+            <td th:text="${f.tipo}">Tipo</td>
         </tr>
         </tbody>
     </table>

@@ -14,16 +14,17 @@ import java.util.List;
 
 
 @Slf4j
+@Service
 public class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
-
-
-
+    public ServicioBusquedas(FacturaRepository repositorio){
+        this.repositorio = repositorio;
+    }
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -47,7 +48,9 @@ public class ServicioBusquedas implements Busquedas {
         try {
             List<Factura> facturas = repositorio.findAll();
 
-            return facturas.stream().filter(f -> f.getTipo()==tipo).toList();
+            return facturas.stream()
+                    .filter(f -> f.getTipo()==tipo)
+                    .toList();
 
         } catch (Exception e) {
             log.error("General Error", e);
@@ -55,7 +58,18 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importeMinimo:{}] [importeMaximo:{}]", importeMinimo,importeMaximo);
+        try{
+            return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
+        }catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
 
+    }
 
 
 }

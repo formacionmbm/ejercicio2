@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class BusquedasFacturasController {
     Busquedas servicio;
 
     @GetMapping
-    public String busquedaPorCodigo(String codigo, Model model) throws ServiceException {
+    public String busquedaPorCodigo(@RequestParam(required=false) String codigo, Model model) throws ServiceException {
         log.info("[busquedaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
 
@@ -45,9 +43,11 @@ public class BusquedasFacturasController {
     }
 
     @GetMapping("/t")
-    public String busquedaPorTipo(TipoFactura tipo, Model model) throws ServiceException {
+    public String busquedaPorTipo(@RequestParam(required=false) TipoFactura tipo, Model model) throws ServiceException {
         log.info("[busquedaPorTipo]");
         log.debug("[tipo:{}]", tipo);
+
+        model.addAttribute("tipos", TipoFactura.values());
 
         List<Factura> list=servicio.busquedaFacturasPorTipo(tipo);
 
@@ -60,8 +60,8 @@ public class BusquedasFacturasController {
 
 
 
-    @PostMapping("/i")
-    public String busquedaPorImportes( ImportesDTO importes, Model model) throws ServiceException{
+    @GetMapping ("/i")
+    public String busquedaPorImportes(ImportesDTO importes, Model model) throws ServiceException{
         log.info("[busquedaPorImportes -POST]");
         log.debug("[importes:{}]",importes);
 
