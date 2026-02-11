@@ -27,17 +27,17 @@ public class BusquedasFacturasRestController {
         this.servicio = servicio; //inyección por constructor
     }
 
-    @GetMapping("/b/importes/{Min}/{Max}")
+    @GetMapping("/b/f/{importeMinimo}/{importeMaximo}")
     public List<Factura> findByImportes(@PathVariable float importeMinimo,@PathVariable float importeMaximo) throws ServiceException {
 
-        log.info("[findByImportes] min:{}, max:{}");
+        log.info("[findByImportes] importeMinimo:{}, importeMaximo:{}",importeMinimo,importeMaximo);
 
         List<Factura> facturas = servicio.busquedaFacturasPorImportes(importeMinimo,importeMaximo);
         log.debug("[Facturas:{}",facturas);
         return facturas;
     }
 
-    @GetMapping("/b/f/c/{code}")
+    @GetMapping("/b/f/{code}")
     public Factura findByCodigo(@PathVariable(name="code") String codigo) throws ServiceException{
         log.info("[findByCodigo] codigo: {}");
         //log.debug("[codigo:{}]",codigo);

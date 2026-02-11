@@ -53,11 +53,17 @@ public class BusquedasFacturasController {
 
         log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
+        model.addAttribute("tipos", TipoFactura.values());
 
         return "/busqueda/t_factura";
     }
 
+    @GetMapping("/i")
+    public String busquedaPorImportes() throws ServiceException{
+        log.info("[busquedaPorImportes -GET]");
 
+        return "/busqueda/t_factura_importes";
+    }
 
 
     @PostMapping("/i")
@@ -67,7 +73,7 @@ public class BusquedasFacturasController {
 
         List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
         log.debug("[Facturas List:{}", listado);
-        model.addAttribute("listado", listado);
+        model.addAttribute("list", listado);
         return "/busqueda/t_factura_importes";
     }
 

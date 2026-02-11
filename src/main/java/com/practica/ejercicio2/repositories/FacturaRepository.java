@@ -13,6 +13,6 @@ public interface FacturaRepository extends JpaRepository<Factura,Long> {
     Optional<Factura> findByCodigo(String codigo);
 
     @Query("SELECT f FROM Factura f WHERE f.importe BETWEEN :importeMinimo AND :importeMaximo")
-    List<Factura> findByEntreImportes(@Param("min") float importeMinimo, @Param("max") float importeMaximo);
+    List<Factura> findByEntreImportes(float importeMinimo, float importeMaximo);
 
 }
