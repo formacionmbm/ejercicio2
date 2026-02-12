@@ -40,6 +40,7 @@ public class BusquedasFacturasController {
 
         log.debug("[Factura:{}", factura);
         model.addAttribute("factura", factura);
+        model.addAttribute("tipos", TipoFactura.values());
 
         return "/busqueda/t_factura";
     }
@@ -53,23 +54,28 @@ public class BusquedasFacturasController {
 
         log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
+        model.addAttribute("tipos", TipoFactura.values());
 
         return "/busqueda/t_factura";
     }
-
-
-
-
-    @PostMapping("/i")
-    public String busquedaPorImportes( ImportesDTO importes, Model model) throws ServiceException{
-        log.info("[busquedaPorImportes -POST]");
-        log.debug("[importes:{}]",importes);
-
-        List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
-        log.debug("[Facturas List:{}", listado);
-        model.addAttribute("listado", listado);
+    @GetMapping("/i")
+    public String busquedaPorImportes() throws ServiceException {
+        log.info("[busquedaPorImportes -GET]");
         return "/busqueda/t_factura_importes";
     }
 
-
+    @PostMapping("/i")
+    public String busquedaPorImportes(@Valid ImportesDTO importes, BindingResult rs, Model model) throws ServiceException{
+        log.info("[busquedaPorImportes -POST]");
+        log.debug("[importes:{}]",importes);
+        if(rs.hasErrors()){
+            log.debug("[ImportesDTO has errors: {}]", rs.getAllErrors());
+            model.addAttribute("error", "Los números deben de ser positivos");
+            return "/busqueda/t_factura_importes";
+        }
+        List<Factura> listado = servicio.busquedaFacturasPorImportes(importes.getImporteMinimo(), importes.getImporteMaximo());
+        log.debug("[Facturas List:{}", listado);
+        model.addAttribute("list", listado);
+        return "/busqueda/t_factura_importes";
+    }
 }

@@ -7,23 +7,21 @@ import com.practica.ejercicio2.repositories.FacturaRepository;
 import com.practica.ejercicio2.services.exceptions.FacturaNotFoundException;
 import com.practica.ejercicio2.services.exceptions.ServiceException;
 import com.practica.ejercicio2.services.interfaces.Busquedas;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 @Slf4j
+@RequiredArgsConstructor
 public class ServicioBusquedas implements Busquedas {
 
-    FacturaRepository repositorio;
-
-
-
-
+    private final FacturaRepository repositorio;
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -55,7 +53,21 @@ public class ServicioBusquedas implements Busquedas {
         }
     }
 
-
-
-
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo) throws ServiceException {
+        log.info("[busquedaFacturaPorImportes]");
+        log.debug("[importeMinimo:{}]", importeMinimo);
+        log.debug("[importeMaximo:{}]", importeMaximo);
+        try {
+            if (importeMinimo < 0 || importeMaximo < 0) {
+                log.error("Importes no pueden ser negativos");
+                return List.of();
+            }
+            return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
+        }
+        catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
 }
