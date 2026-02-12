@@ -50,7 +50,7 @@
     <form name="f_buscador_tipo" action="/b/f/t">
          <select id="tipo" name="tipo">
             <option></option>
-            <option th:value="${tipo}" th:text="${tipo}"></option>
+            <option th:each="tipo:${tipos}" th:value="${tipo}" th:text="${tipo}"></option>
         </select>
         <button th:text="#{form.button.go}">Enviar</button>
     </form>

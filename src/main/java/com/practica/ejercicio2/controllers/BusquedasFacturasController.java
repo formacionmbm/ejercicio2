@@ -53,12 +53,16 @@ public class BusquedasFacturasController {
 
         log.debug("[Facturas List:{}", list);
         model.addAttribute("list", list);
-
+        model.addAttribute("tipos", TipoFactura.values());
 
         return "/busqueda/t_factura";
     }
 
-
+    @GetMapping("/i")
+    public String busquedaPorImportes() throws ServiceException{
+        log.info("[busquedaPorImportes -GET]");
+        return "/busqueda/t_factura_importes";
+    }
 
 
     @PostMapping("/i")

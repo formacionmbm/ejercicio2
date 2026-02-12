@@ -19,7 +19,9 @@ public class ServicioBusquedas implements Busquedas {
 
     FacturaRepository repositorio;
 
-
+    public ServicioBusquedas(FacturaRepository repositorio){
+        this.repositorio=repositorio;
+    }
 
 
 
@@ -62,7 +64,8 @@ public class ServicioBusquedas implements Busquedas {
         log.info("[busquedaFacturaPorImportes]");
 
         try {
-            //if (importeMinimo > 0 && importeMaximo > 0)
+            if (importeMinimo < 0 || importeMaximo < 0)
+                return List.of();
             return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
 
 
