@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-@Slf4j
 @Service
+@Slf4j
 public class ServicioBusquedas implements Busquedas {
 
     @Autowired
@@ -57,18 +56,15 @@ public class ServicioBusquedas implements Busquedas {
             throw new ServiceException();
         }
     }
-
+    // metodo restante que busca por importes
     @Override
-    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo)throws ServiceException{
+    public List<Factura> busquedaFacturasPorImportes(float min, float max) throws ServiceException {
         log.info("[busquedaFacturasPorImportes]");
-        log.debug("[importeMinimo:{}]", importeMinimo);
-        log.debug("[importeMaximo:{}]", importeMaximo);
+        log.debug("[min:{}, max:{}]", min, max);
         try {
-            if(importeMinimo<0 || importeMaximo<0)
-                return List.of();
-
-            return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
-
+            // El test exige devolver lista vacía si los importes son negativos
+            if (min < 0 || max < 0) return List.of();
+            return repositorio.findByEntreImportes(min, max);
         } catch (Exception e) {
             log.error("General Error", e);
             throw new ServiceException();

@@ -44,6 +44,7 @@ public class BusquedasFacturasRestController {
     }
 
     @GetMapping("/b/t/{tipo}")
+    //faltaba parametro tipo
     public List<Factura> findByTipo(@PathVariable TipoFactura tipo) throws ServiceException{
         log.info("[findByTipo]");
         log.debug("[tipo:{}]",tipo);
