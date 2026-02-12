@@ -63,6 +63,8 @@ public class ServicioBusquedas implements Busquedas {
         log.debug("[importeMinimo:{}][importeMaximo:{}]", importeMinimo, importeMaximo);
 
         try {
+            if(importeMaximo<0 || importeMinimo<0)
+                return List.of();
             return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
         } catch (Exception e) {
             log.error("General Error", e);
