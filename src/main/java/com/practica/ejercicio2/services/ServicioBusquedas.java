@@ -66,9 +66,9 @@ public class ServicioBusquedas implements Busquedas {
         log.info("[busquedaFacturasPorImportes]");
         log.debug("[min:{}, max:{}]", importeMinimo, importeMaximo);
         try {
-            //if (importeMinimo < 0 || importeMaximo < 0) {
-            //    return new ArrayList<>();
-            //}
+            if (importeMinimo < 0 || importeMaximo < 0) {
+                return new ArrayList<>();
+            }
             return repositorio.findByEntreImportes(importeMinimo, importeMaximo);
         } catch (Exception e) {
             log.error("General Error", e);
