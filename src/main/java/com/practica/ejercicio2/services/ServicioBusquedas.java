@@ -8,14 +8,17 @@ import com.practica.ejercicio2.services.exceptions.FacturaNotFoundException;
 import com.practica.ejercicio2.services.exceptions.ServiceException;
 import com.practica.ejercicio2.services.interfaces.Busquedas;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Slf4j
+@Service
 public class ServicioBusquedas implements Busquedas {
 
+    @Autowired
     FacturaRepository repositorio;
 
 
@@ -23,7 +26,7 @@ public class ServicioBusquedas implements Busquedas {
 
 
     @Override
-    public Factura busquedaFacturaPorCodigo(Long codigo) throws ServiceException {
+    public Factura busquedaFacturaPorCodigo(String codigo) throws ServiceException {
         log.info("[busquedaFacturaPorCodigo]");
         log.debug("[codigo:{}]", codigo);
         try {
@@ -48,6 +51,23 @@ public class ServicioBusquedas implements Busquedas {
             List<Factura> facturas = repositorio.findAll();
 
             return facturas.stream().filter(f -> f.getTipo()==tipo).toList();
+
+        } catch (Exception e) {
+            log.error("General Error", e);
+            throw new ServiceException();
+        }
+    }
+
+    @Override
+    public List<Factura> busquedaFacturasPorImportes(float importeMinimo, float importeMaximo)throws ServiceException{
+        log.info("[busquedaFacturasPorImportes]");
+        log.debug("[importeMinimo:{}]", importeMinimo);
+        log.debug("[importeMaximo:{}]", importeMaximo);
+        try {
+            if(importeMinimo<0 || importeMaximo<0)
+                return List.of();
+
+            return repositorio.findByEntreImportes(importeMinimo,importeMaximo);
 
         } catch (Exception e) {
             log.error("General Error", e);
